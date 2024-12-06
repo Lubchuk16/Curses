@@ -1,42 +1,22 @@
-# TODO импортировать необходимые молули
 import csv
 import json
+from collections import OrderedDict
 
 INPUT_FILENAME = "input.csv"
 OUTPUT_FILENAME = "output.json"
 
 
 def task() -> None:
-    ...  # TODO считать содержимое csv файла
-    with open(INPUT_FILENAME, 'r') as f:
+    with open(INPUT_FILENAME, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
-
-        json_data = []
-
-        for row in reader:
-            tmp = {
-                'longitude': row['longitude'],
-                'latitude': row['latitude'],
-                'housing_median_age': row['housing_median_age'],
-                'total_rooms': row['total_rooms'],
-                'total_bedrooms': row['total_bedrooms'],
-                'population': row['population'],
-                'households': row['households'],
-                'median_income': row['median_income'],
-                'median_house_value': row['median_house_value'],
-
-            }
-            json_data.append(tmp)
-
-    ...  # TODO Сериализовать в файл с отступами равными 4
-    with open(OUTPUT_FILENAME, 'w') as f:
-        json.dump(json_data, f, indent=4)
-
+        json_data = [OrderedDict(row) for row in reader]
+    with open(OUTPUT_FILENAME, 'w', encoding='utf-8') as f:
+        json.dump(json_data, f, indent=4, ensure_ascii=False)
 
 if __name__ == '__main__':
     # Нужно для проверки
-    task()
 
-    with open(OUTPUT_FILENAME) as output_f:
+    task()
+    with open(OUTPUT_FILENAME, encoding='utf-8') as output_f:
         for line in output_f:
             print(line, end="")
